@@ -1,0 +1,36 @@
+﻿@page "/login"
+@using BlazorClient.Services
+@inject AuthService auth
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Login</label>
+                <input bind=@UserLogin type="text" class="form-control" placeholder="Login" />
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input bind=@Password type="password"
+                       class="form-control"
+                       id="exampleInputPassword1"
+                       placeholder="Password" />
+            </div>
+            <button type="submit" class="btn btn-raised btn-primary" onclick="@Authorize">Submit</button>
+        </div>
+    </div>
+</div>
+        @functions{
+            public String UserLogin { get; set; } = "admin";
+            public String Password { get; set; } = "1234";
+            protected override void OnInit()
+            {
+                Console.WriteLine("oninitlogin");
+            }
+            public void Authorize()
+            {
+                Console.WriteLine(Password);
+                this.auth.Login(UserLogin, Password);
+            }
+        }

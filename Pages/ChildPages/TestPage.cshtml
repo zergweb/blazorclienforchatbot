@@ -1,0 +1,15 @@
+﻿
+
+@PageName
+<button onclick=@test>getname</button>
+<h1>TestPage</h1>
+@functions{
+    [Parameter]
+    private string PageName { get; set; }
+
+    public void test()
+    {
+
+       Console.WriteLine(this.PageName);
+    }
+}
