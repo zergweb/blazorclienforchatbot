@@ -83,7 +83,13 @@ app {
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
 }
-
+.logger-window {
+    background-color: #000;
+    color: aliceblue;
+    height: 500px;
+    overflow: scroll;
+    padding: 10px;
+}
 @media (max-width: 767.98px) {
     .main .top-row {
         display: none;

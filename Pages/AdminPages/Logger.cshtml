@@ -2,40 +2,27 @@
 @page "/logger"
 @using BlazorClient.Services
 @inject AuthService auth
-@inject IHttpService http
+@inherits LoggerLogic
 
-<h1>Hello, world!</h1>
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown button
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <a class="dropdown-item" href="#">Something else here</a>
-    </div>
+<div style="margin:5px">
+    <button class="btn btn-raised btn-primary" style="width:120px;margin:5px" onclick="@ConnectLog">@ConnectBtn()</button>
+    <span>Status: </span><span> @ConnectStatus</span>
+    <button class="btn btn-raised btn-primary" style="width:120px;margin:5px" onclick="@ClearLog">Clear log</button>
+    @*<span style="margin:5px">URL</span>*@
+    @*<input bind="@Ws_URL" style="margin:5px;width:250px" disabled="@(!IsDisabled)" />
+        <span style="width:120px;margin:5px">status:@Ws_Status</span>*@
 </div>
-Welcome to your new app.
-<TestPage PageName=@PageName/>
-@html
-<SurveyPrompt Title="How is Blazor working for you?" />
-<input type="text" bind="@testStr" />
-<h1>@testStr</h1>
-<button onclick=@testbtn>test</button>
-
-@functions{
-    [Parameter]
-    private string PageName { get; set; }
-    public string html = "<h1>testhtml</h1>";
-    string testStr { get; set; } = "teststr";
-    public void testbtn()
+<span style="margin:5px">Log:</span>
+<div>
+</div>
+<div class="logger-window">
+    @foreach (var item in Log.log.OrderByDescending(x => x.ID))
     {
-        http.TestAuth();
+        <div>
+          @item.Date @item.Message
+        </div>
     }
-    protected override async Task OnInitAsync()
-    {
-       await auth.CheckAuthorize();
-    }
+</div>
     
 
-}
+
