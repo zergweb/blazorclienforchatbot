@@ -1,0 +1,82 @@
+﻿@page "/managebot"
+@using BlazorClient.Services
+@using BlazorClient.Model
+@inject AuthService auth
+@inject ManageBotService manageBotService
+<h1>manage bot</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @if (!Status.IsConnected)
+            {
+            <button type="button" class="btn btn-raised btn-primary" onclick="@Connect">Connect Bot</button>
+            }
+            else
+            {
+            <button type="button" class="btn btn-raised btn-danger" onclick="@Disconnect">Disconnect Bot</button>
+            }                  
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-raised btn-primary" onclick="@UpdateStatus">Update Status</button>
+            <div>
+                <span>Bot status:</span>
+                @if (Status.IsConnected)
+                {<span>Подключен</span>
+                }
+                else { <span>Не подключен</span>}
+            </div>
+            <div>               
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Список подключенных каналов
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">                               
+                                <div class="list-group">
+                                    @foreach (var chanell in Status.Channels)
+                                    {
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            @chanell
+                                        </a>
+                                    }
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>              
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private BotStatus Status { get; set; } = new BotStatus { Name = "Empty status",
+        IsConnected = false,
+        Channels = new List<String>() {
+        "legendary_prevozmogatel", "Some_channel"
+        } };
+    protected override async Task OnInitAsync()
+    {
+        await auth.CheckAuthorize();
+        UpdateStatus();
+    }
+    public async void Connect()
+    {
+        await manageBotService.Connect();
+        UpdateStatus();
+    }
+    public async void Disconnect()
+    {
+        await manageBotService.Disconnect();
+        UpdateStatus();
+    }
+    public async void UpdateStatus()
+    {
+        Status = await manageBotService.GetStatus();
+        StateHasChanged();
+    }
+}

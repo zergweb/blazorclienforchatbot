@@ -14,6 +14,7 @@ namespace BlazorClient.Services
     public class AuthService
     {
         private LocalStorage localStorage;
+        private String apiUrl = "https://localhost:44353/";
         private IUriHelper uriHelper { get; set; }
         private HttpClient http;
         public bool IsLogged { get; set; } = false;
@@ -25,19 +26,19 @@ namespace BlazorClient.Services
         }
         public async Task CheckAuthorize()
         {
-            if (await localStorage.GetItem<String>("token") != null)
+            var t = await http.GetAsync(apiUrl+ "isauth");
+            if (t.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 this.IsLogged = true;
             }
             else
             {
-            uriHelper.NavigateTo("/login"); 
+                uriHelper.NavigateTo("/login");
             }
-            
         }
         public async Task Login(String login, String password)
         {
-            var r = await http.PostJsonAsync<AuthResponse>("https://localhost:44353/login", new AuthForm() { Login = login, Pass = password });
+            var r = await http.PostJsonAsync<AuthResponse>(apiUrl+"login", new AuthForm() { Login = login, Pass = password });
             if (r!=null)
             {
                 await localStorage.SetItem<String>("token", r.Token);
@@ -52,7 +53,6 @@ namespace BlazorClient.Services
             this.IsLogged = false;
             uriHelper.NavigateTo("/login");
         }
-
         private async Task SetAuthorizationHeader()
         {
             if (!http.DefaultRequestHeaders.Contains("Authorization"))

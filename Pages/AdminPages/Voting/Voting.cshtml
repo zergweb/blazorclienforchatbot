@@ -1,0 +1,40 @@
+﻿@page "/voting"
+@using BlazorClient.Pages.AdminPages.VotingPage;
+@inherits VotingPageLogic
+@*<input type="checkbox" bind="@boolvalue" /><br />
+    Boolvalue: @boolvalue<br />
+    <button onclick="@toggle">toggle</button>*@
+<div class="form-group">
+    <label for="exampleTextarea" class="bmd-label-floating">Описаниие голосования</label>
+    <textarea class="form-control" id="exampleTextarea" rows="5" bind="@ObjectOfVoting"></textarea>
+</div>
+<div class="form-inline">
+    <div class="form-group">
+        <label for="exampleInputName2" class="bmd-label-floating">Опция</label>
+        <input type="text" class="form-control" id="exampleInputName2" bind="@OptValue" />
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail2" class="bmd-label-floating">Комманда</label>
+        <input type="text" class="form-control" id="exampleInputEmail2" bind="@OptCommand" />
+    </div>
+    <span class="form-group bmd-form-group">
+        <button class="btn btn-primary btn-raised " onclick="@AddOption">Добавить опцию </button>
+    </span>
+</div>
+@foreach (var item in VP.Voting.Options)
+{
+    <div class="form-inline">
+        <span class="form-group bmd-form-group">
+            Опция: @item.Value  Комманда:  @item.Key
+        </span>
+        <span class="form-group bmd-form-group">
+            <button class="btn btn-primary btn-raised" onclick=@(()=>RemoveOption(item.Key))>Удалить</button>
+        </span>
+    </div>
+}
+@foreach (var item in VotingEvents)
+{
+    <input type="checkbox" bind=@(item.IsSelected)  /> <span>@item.Desc</span>
+}
+<button class="btn btn-primary btn-raised " onclick="@StartVoting">Начать голосование</button>
+

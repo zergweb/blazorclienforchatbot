@@ -29,7 +29,7 @@ namespace BlazorClient.Pages.AdminPages
         {
             await auth.CheckAuthorize();
             Log.StateChanged += StateHasChanged;
-            Log.WsConnect();
+            //Log.WsConnect();
                   
         }
         public String ConnectBtn()

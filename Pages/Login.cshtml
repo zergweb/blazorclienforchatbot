@@ -28,9 +28,8 @@
             {
                 Console.WriteLine("oninitlogin");
             }
-            public void Authorize()
+            public async Task Authorize()
             {
-                Console.WriteLine(Password);
-                this.auth.Login(UserLogin, Password);
+                await auth.Login(UserLogin, Password);
             }
         }

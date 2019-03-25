@@ -13,6 +13,7 @@ namespace BlazorClient
             services.AddStorage();
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<AuthService>();
+            services.AddTransient<ManageBotService>();
             services.AddSingleton<LogService>();
         }
 
